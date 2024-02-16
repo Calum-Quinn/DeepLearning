@@ -62,3 +62,20 @@ We also employed rectified lineau units (ReLU) so as to avoid gradient vanishing
 Lastly we used batches to decide after how many predictions the weights should be updated.
 
 The reason for this network is to predict whether their will be traffic depending on the day and the time.
+
+
+### 5. Convolutional Neural Networks
+
+This section of the course is not an exercise but more a class on convolutional neural networks.
+They are very successful in computer vision applications.
+
+It explains that convolutional neural networks analyses data part by part instead of all together as this is easier to process.
+Filters are used to scan individual parts of the data for something specific the filter has been trained to find.
+After going over the data, the filter then produces an output image of it's own to represent the data according to it's training.
+
+![Filter](05_ConvolutionalNetworks/Filter.png)
+
+Once the various filters have been over the data you can use pooling layers to compress the information into fewer pixels.
+For this there are two main approaches, max pooling and average pooling.
+
+![Pooling](05_ConvolutionalNetworks/Pooling.png)
