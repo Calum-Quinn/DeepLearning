@@ -79,3 +79,21 @@ Once the various filters have been over the data you can use pooling layers to c
 For this there are two main approaches, max pooling and average pooling.
 
 ![Pooling](05_ConvolutionalNetworks/Pooling.png)
+
+
+### 6. First Convolutional Neural Network
+
+This next exercise is the first one with a real application even for me.
+The goal is to create a convolutional neural network to recognise shapes.
+
+For this we have a large amount of examples stored [here](06_ConvolutionalNetwork/shapes) that we can use to train the model.
+The final network will look something like this:
+
+![Model](06_ConvolutionalNetwork/Model.png)
+
+For each image in the training set we start by creating a convolutional layer with 16 filters.
+Then we compress that layer by creating a max pooling layer.
+After that we flatten the compressed layer into a one dimensional vector.
+Finally we create a dense/output layer to give us the categorisation of the shape.
+
+I decided to add a last section which shows us which images were misclassified to see if there are any specific anomalies.
