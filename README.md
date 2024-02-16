@@ -46,3 +46,19 @@ Each neuron will have all the inputs for the network (in this case 15).
 
 The use case for this model is presented as a detection system for deciding what colour box to put each pizza in.
 It checks the ingredients on the pizza and the neural network has to decide whether that makes the vegetarian, vegan or meaty.
+
+
+### 4. Deep Fully Connected Network
+
+This exercise guides us in the creation of a deep fully connected network.
+We now have 3 layers to our network, input, hidden and output which allow for more complex computing.
+This time we use a function called dropout which basically does not activate some random neurons for an epoch.
+This avoids having dependencies on preceding parts of the network.
+
+![Dropout](04_DeepFullyConnected/Dropout.png)
+
+We also employed rectified lineau units (ReLU) so as to avoid gradient vanishing during backpropagation of the error through multiple layers.
+
+Lastly we used batches to decide after how many predictions the weights should be updated.
+
+The reason for this network is to predict whether their will be traffic depending on the day and the time.
