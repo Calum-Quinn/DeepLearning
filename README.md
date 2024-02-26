@@ -117,3 +117,13 @@ We then split the text into chunks of characters that will be used to predict th
 With these chunks we designate input and output chunks so that we can tell the model what we want to achieve.
 
 Between each epoch of training, we will be saving the model because we want to change the embedding layer's setting to only use one chunk when using the model.
+
+### 8. Extra
+
+The course talks about a few other architectures for neural networks and recommends the following reading.
+- [Autoencoders](https://blog.keras.io/building-autoencoders-in-keras.html)
+- [Attention](https://www.tensorflow.org/tutorials/text/nmt_with_attention)
+- [Deep Reinforcement Learning](https://keras.io/examples/rl/actor_critic_cartpole/)
+- [Generative Adversarial Networks](https://www.tensorflow.org/tutorials/generative/dcgan)
+- [Transfer Learning](https://keras.io/guides/transfer_learning/)
+- [Regression](https://www.tensorflow.org/tutorials/structured_data/time_series)
