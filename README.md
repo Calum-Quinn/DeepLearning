@@ -97,3 +97,23 @@ After that we flatten the compressed layer into a one dimensional vector.
 Finally we create a dense/output layer to give us the categorisation of the shape.
 
 I decided to add a last section which shows us which images were misclassified to see if there are any specific anomalies.
+
+
+### 7. Recurrent Neural Network
+
+For this part of the course, the goal is to create and train a recurrent neural network.
+This will use many pizza recipes to detect the way they are written.
+
+What makes the model recurrent is the fact that after a defined amount of epochs, the output is reinserted into network.
+This means the output is not simply predicted to do with the current inputs but also to do with the previous predictions and inputs.
+
+This is often used when predicting text as you need to know the previous letters in a word/sentence to be able to accurately guess the next one.
+
+![Model](07_RecurrentNetworks/Model.png)
+
+In this exercise we start by converting the input into a machine interpretable format, in this case this means mapping the various characters to numbers.
+
+We then split the text into chunks of characters that will be used to predict the next character in the recipe.
+With these chunks we designate input and output chunks so that we can tell the model what we want to achieve.
+
+Between each epoch of training, we will be saving the model because we want to change the embedding layer's setting to only use one chunk when using the model.

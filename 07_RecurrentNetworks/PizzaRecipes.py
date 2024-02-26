@@ -1,4 +1,10 @@
 import numpy as np
+import os
+from tensorflow.keras.layers import Embedding, LSTM, Dense
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow import train
+from tensorflow import TensorShape
 
 # Create the array
 data_pizza = np.load("recipes/data_pizza.npy", allow_pickle=True)
@@ -56,7 +62,88 @@ for idx in range(0, min(len(x), len(y)), batch_size):
             len(x[idx:idx + batch_size]) == batch_size and
             len(y[idx:idx + batch_size]) == batch_size
     ):
-        batched_x.append(np.asarray(x[idx:idx + batch_size]))
-        batched_y.append(np.asarray(y[idx:idx + batch_size]))
+        batch_x = np.asarray(x[idx:idx + batch_size])
+        batch_y = np.asarray(y[idx:idx + batch_size])
+        batched_x.append(batch_x)
+        batched_y.append(batch_y)
+
+# Concatenate all batches into one large batch
+batched_x = np.concatenate(batched_x)
+batched_y = np.concatenate(batched_y)
 
 
+# Define and build the model
+def create_model(batch_size):
+    input_layer = Embedding(
+        input_dim=len(vocabulary),
+        output_dim=256,
+        batch_input_shape=[batch_size, None]
+    )
+
+    hidden_layer = LSTM(
+        units=256,
+        return_sequences=True,
+        stateful=True
+    )
+
+    output_layer = Dense(units=len(vocabulary), activation='softmax')
+
+    rnn_model = Sequential([
+        input_layer,
+        hidden_layer,
+        output_layer,
+    ])
+
+    return rnn_model
+
+
+# Create the model
+rnn_model = create_model(batch_size)
+rnn_model.summary()
+
+rnn_model.compile(
+    optimizer='adam',
+    loss='sparse_categorical_crossentropy'
+)
+
+# Set up the storage during training
+checkpoint_dir = './training_checkpoints'
+checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
+checkpoint_callback = ModelCheckpoint(
+    filepath=checkpoint_prefix,
+    save_weights_only=True
+)
+
+# Train the model
+history = rnn_model.fit(
+    batched_x,
+    batched_y,
+    epochs=200,
+    callbacks=[checkpoint_callback],
+    batch_size=batch_size
+)
+
+# New version of the model which takes 1 batch of 1 character
+latest_checkpoint = train.latest_checkpoint(checkpoint_dir)
+single_input_rnn_model = create_model(batch_size=1)
+single_input_rnn_model.load_weights(latest_checkpoint)
+single_input_rnn_model.build(TensorShape([1, None]))
+
+# Determine the average length of a list of ingredients and round it up to an integer
+average_length_ingredients = np.mean([len(t) for t in joined_ingredients])
+output_sequence_length = int(np.round(average_length_ingredients))
+print(output_sequence_length)
+
+# Choose a starting character and use the model to predict what the next character will be
+starting_character = 'a'
+
+model_input = [[character_to_number[s] for s in starting_character]]
+generated_text = []
+single_input_rnn_model.reset_states()
+for i in range(output_sequence_length):
+    predictions = single_input_rnn_model.predict(model_input)
+    predicted_id = np.argmax(predictions)
+    model_input = np.array([np.array([predicted_id])])
+    generated_text.append(number_to_character[predicted_id])
+
+print(starting_character + ''.join(generated_text))
